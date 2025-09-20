@@ -1,20 +1,18 @@
 {
   "name": "os-intro",
   "version": "1.0.0",
-  "description": "git clone --recursive https://github.com/yamadharma/course-directory-student-template.git",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cezaryt5/study_2024-2025_os-intro.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cezaryt5/study_2024-2025_os-intro/issues"
-  },
-  "homepage": "https://github.com/cezaryt5/study_2024-2025_os-intro#readme"
+  "packageManager": "pnpm@10.9.0"
+  "config":{
+	"commitizen":{
+		"path": "cz-conventional-changelog"
+		}
+	}
 }
