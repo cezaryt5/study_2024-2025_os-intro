@@ -5,13 +5,13 @@ author:
   student_number: "1032248286"
   group: "Nkabd-05"
   year: "2nd year"
-  email: "mohamed.musa@student.rudn.ru"
+  email: "1032248286@pfur.ru"
   affiliation:
     - name: Российский университет дружбы народов
       country: Российская Федерация
       postal-code: 117198
       city: Москва
-      address: ул. Миклухо-Маклая, д. 6
+      address: ул. Миклухо-Маклая, д. 19
 
 ## Title
 title: "Лабораторная работа №5"
@@ -75,7 +75,7 @@ gpg --full-generate-key
 Был инициализирован password store с использованием GPG:
 
 ```bash
-pass init "Mohamed Musa"
+pass init "ceazer"
 pass git init
 ```
 
