@@ -15,122 +15,352 @@ author:
 
 ## Title
 title: "Лабораторная работа №4"
-subtitle: "Настройка современного окружения разработки"
+subtitle: "Продвинутое использование git"
 license: "CC BY"
 ---
 
 # Цель работы
 
-Изучить процесс настройки современного окружения разработки с использованием pnpm, commitizen и conventional commits для управления проектами.
+Получение навыков правильной работы с репозиториями git. Изучение работы с git-flow, семантическим версионированием и conventional commits.
 
 # Задание
 
-1. Настроить проект с использованием pnpm package manager
-2. Сконфигурировать commitizen для conventional commits
-3. Создать package.json с необходимыми зависимостями
-4. Настроить автоматическое управление changelog
-5. Создать git репозиторий и выполнить первоначальную настройку
+1. Выполнить работу для тестового репозитория
+2. Преобразовать рабочий репозиторий в репозиторий с git-flow и conventional commits
 
 # Теоретическое введение
 
-Современная разработка программного обеспечения требует использования специализированных инструментов для управления зависимостями, контроля версий и документирования изменений.
+## Рабочий процесс Gitflow
 
-**pnpm** - это эффективный менеджер пакетов для Node.js, который использует символьные ссылки для экономии дискового пространства и ускорения установки зависимостей.
+Gitflow Workflow — это модель ветвления Git, опубликованная и популяризованная Винсентом Дриссеном. Она предполагает выстраивание строгой модели ветвления с учётом выпуска проекта и отлично подходит для организации рабочего процесса на основе релизов.
 
-**Commitizen** - инструмент для создания коммитов с соблюдением conventional commits спецификации, которая обеспечивает единообразие сообщений коммитов.
+Последовательность действий при работе по модели Gitflow:
 
-**Conventional Commits** - спецификация для создания понятных сообщений коммитов с автоматическим семантическим версионированием.
+- Из ветки master создаётся ветка develop
+- Из ветки develop создаётся ветка release
+- Из ветки develop создаются ветки feature
+- Когда работа над веткой feature завершена, она сливается с веткой develop
+- Когда работа над веткой релиза release завершена, она сливается в ветки develop и master
+- Если в master обнаружена проблема, из master создаётся ветка hotfix
+- Когда работа над веткой исправления hotfix завершена, она сливается в ветки develop и master
+
+## Семантическое версионирование
+
+Семантическое версионирование — это формальное соглашение о том, как назначать и увеличивать номера версий. Версия задаётся в виде кортежа МАЖОРНАЯ_ВЕРСИЯ.МИНОРНАЯ_ВЕРСИЯ.ПАТЧ:
+
+- МАЖОРНУЮ версию увеличивают, когда сделаны обратно несовместимые изменения API
+- МИНОРНУЮ версию увеличивают, когда добавляется новая функциональность, не нарушая обратной совместимости
+- ПАТЧ-версию увеличивают, когда делаются обратно совместимые исправления
+
+## Conventional Commits
+
+Conventional Commits — это соглашение о том, как нужно писать сообщения коммитов. Оно совместимо с SemVer и регламентирует структуру и основные типы коммитов.
+
+Структура коммита:
+
+```
+<тип>(<область>): <описание изменения>
+<пустая линия>
+[необязательное тело]
+<пустая линия>
+[необязательный нижний колонтитул]
+```
+
+Основные типы коммитов:
+
+- **feat:** — добавление новой функции
+- **fix:** — исправление ошибки
+- **docs:** — изменения только в документации
+- **style:** — изменения форматирования кода
+- **refactor:** — рефакторинг кода
+- **test:** — добавление или исправление тестов
+- **chore:** — изменения в процессе сборки или вспомогательных инструментах
 
 # Выполнение лабораторной работы
 
-## Установка и настройка pnpm
+## Установка программного обеспечения
 
-В начале работы был установлен pnpm package manager. На рисунке @fig-pnpm показан процесс настройки проекта с использованием pnpm.
+### Установка git-flow
 
-![Установка и настройка pnpm](image/pnpm.png){#fig-pnpm width=80%}
+Для работы с моделью Gitflow необходимо установить пакет git-flow. В системе Fedora установка выполняется следующими командами:
 
-## Создание package.json
-
-Был создан файл package.json с необходимой конфигурацией проекта:
-
-```json
-{
-  "name": "git-extended",
-  "version": "1.0.0",
-  "description": "Git repo for educational purposes",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Mohamed Musa 1032248286@rudn.ru",
-  "license": "ISC",
-  "packageManager": "pnpm@9.0",
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  }
-}
+```bash
+dnf copr enable elegos/gitflow
+dnf install gitflow
 ```
 
-Файл package.json показан на рисунке @fig-package-json.
+### Установка Node.js
 
-![Конфигурация package.json](image/package.json.png){#fig-package-json width=80%}
+Node.js необходим для работы с инструментами семантического версионирования и conventional commits:
 
-## Установка commitizen
+```bash
+dnf install nodejs
+dnf install pnpm
+```
 
-Была выполнена установка commitizen с использованием pnpm для создания conventional commits:
+### Настройка Node.js
+
+После установки Node.js необходимо настроить окружение для работы с pnpm. Выполняем команду настройки:
+
+```bash
+pnpm setup
+```
+
+Затем перезагружаем конфигурацию оболочки:
+
+```bash
+source ~/.bashrc
+```
+
+На рисунке @fig-pnpm показан процесс настройки pnpm.
+
+![Настройка pnpm](image/pnpm.png){#fig-pnpm width=80%}
+
+### Установка программ для conventional commits
+
+Устанавливаем commitizen — программу для помощи в форматировании коммитов:
 
 ```bash
 pnpm add -g commitizen
-pnpm add -D cz-conventional-changelog
 ```
 
-Процесс установки показан на рисунке @fig-commitzen.
+При этом устанавливается скрипт git-cz, который используется для создания коммитов.
+
+Также устанавливаем standard-changelog для автоматического создания журнала изменений:
+
+```bash
+pnpm add -g standard-changelog
+```
+
+Процесс установки commitizen показан на рисунке @fig-commitzen.
 
 ![Установка commitizen](image/commitzen.png){#fig-commitzen width=80%}
 
-## Создание первого релиза
+## Создание репозитория git
 
-Был создан первый релиз проекта с использованием стандартных команд git и npm. На рисунке @fig-release показан процесс создания первого релиза.
+### Инициализация репозитория
+
+Создаем новый репозиторий на GitHub с именем git-extended. Затем выполняем первоначальную настройку локального репозитория:
+
+```bash
+git init
+git add .
+git commit -m "first commit"
+git remote add origin git@github.com:cezaryt5/git-extended.git
+git push -u origin master
+```
+
+### Конфигурация для Node.js пакетов
+
+Инициализируем проект Node.js:
+
+```bash
+pnpm init
+```
+
+При инициализации заполняем следующие параметры:
+
+- Название пакета: git-extended
+- Версия: 1.0.0
+- Описание: Git repo for educational purposes
+- Автор: Mohamed Musa <1032248286@pfur.ru>
+- Лицензия: CC-BY-4.0
+
+Добавляем в файл package.json конфигурацию для commitizen:
+
+```json
+"config": {
+    "commitizen": {
+        "path": "cz-conventional-changelog"
+    }
+}
+```
+
+Итоговый файл package.json показан на рисунке @fig-package-json.
+
+![Конфигурация package.json](image/package.json.png){#fig-package-json width=80%}
+
+Добавляем файлы в индекс и выполняем коммит с использованием git-cz:
+
+```bash
+git add .
+git cz
+```
+
+Отправляем изменения на GitHub:
+
+```bash
+git push
+```
+
+### Конфигурация git-flow
+
+Инициализируем git-flow в репозитории:
+
+```bash
+git flow init
+```
+
+При инициализации устанавливаем префикс для тегов версий в значение `v`.
+
+Проверяем, что находимся на ветке develop:
+
+```bash
+git branch
+```
+
+Загружаем все ветки в удаленный репозиторий:
+
+```bash
+git push --all
+```
+
+Устанавливаем внешнюю ветку как вышестоящую:
+
+```bash
+git branch --set-upstream-to=origin/develop develop
+```
+
+### Создание первого релиза
+
+Создаем релиз с версией 1.0.0:
+
+```bash
+git flow release start 1.0.0
+```
+
+Создаем журнал изменений:
+
+```bash
+standard-changelog --first-release
+```
+
+Добавляем журнал изменений в индекс и делаем коммит:
+
+```bash
+git add CHANGELOG.md
+git commit -am 'chore(site): add changelog'
+```
+
+Завершаем релиз:
+
+```bash
+git flow release finish 1.0.0
+```
+
+Процесс создания первого релиза показан на рисунке @fig-release.
 
 ![Создание первого релиза](image/first release.png){#fig-release width=80%}
 
-## Работа с changelog
+Отправляем данные на GitHub:
 
-Были выполнены операции по добавлению записей в changelog и управлению версиями проекта. Процесс работы с changelog показан на рисунке @fig-changelog.
+```bash
+git push --all
+git push --tags
+```
 
-![Управление changelog](image/changelog.png){#fig-changelog width=80%}
+Создаем релиз на GitHub:
 
-Дополнительные операции по добавлению в changelog показаны на рисунке @fig-add-changelog.
+```bash
+gh release create v1.0.0 -F CHANGELOG.md
+```
 
-![Добавление в changelog](image/addChangelog.png){#fig-add-changelog width=80%}
+## Работа с репозиторием git
 
-## Выполнение коммитов
+### Разработка новой функциональности
 
-В ходе работы было выполнено несколько коммитов с использованием настроенного commitizen. Процесс создания коммитов показан на рисунке @fig-commits.
+Создаем ветку для новой функциональности:
 
-![Создание коммитов с commitizen](image/commits.png){#fig-commits width=80%}
+```bash
+git flow feature start feature_branch
+```
+
+Работаем с кодом как обычно, добавляя и изменяя файлы. По окончании разработки объединяем ветку feature_branch с develop:
+
+```bash
+git flow feature finish feature_branch
+```
+
+### Создание нового релиза
+
+Создаем релиз с версией 1.2.3:
+
+```bash
+git flow release start 1.2.3
+```
+
+Обновляем номер версии в файле package.json на 1.2.3.
+
+Создаем обновленный журнал изменений:
+
+```bash
+standard-changelog
+```
+
+Процесс работы с changelog показан на рисунке @fig-changelog.
+
+![Работа с changelog](image/changelog.png){#fig-changelog width=80%}
+
+Добавляем журнал изменений в индекс:
+
+```bash
+git add CHANGELOG.md
+git commit -am 'chore(site): update changelog'
+```
+
+Дополнительные операции с changelog показаны на рисунке @fig-add-changelog.
+
+![Добавление записей в changelog](image/addChangelog.png){#fig-add-changelog width=80%}
+
+Завершаем релиз:
+
+```bash
+git flow release finish 1.2.3
+```
+
+Отправляем данные на GitHub:
+
+```bash
+git push --all
+git push --tags
+```
+
+Создаем релиз на GitHub:
+
+```bash
+gh release create v1.2.3 -F CHANGELOG.md
+```
 
 # Выводы
 
-В ходе лабораторной работы были успешно выполнены следующие задачи:
+В ходе выполнения лабораторной работы были получены практические навыки правильной работы с репозиториями git. Освоены следующие технологии и инструменты:
 
-1. ✅ Установлен и настроен pnpm package manager
-2. ✅ Создан проект git-extended с правильной конфигурацией package.json
-3. ✅ Настроен commitizen для conventional commits
-4. ✅ Выполнены операции с git (add, commit, push)
-5. ✅ Создан и обновлен changelog проекта
-6. ✅ Выполнен первый релиз проекта
+1. **Git-flow** — модель ветвления для организации рабочего процесса с использованием веток master, develop, feature, release и hotfix
+2. **Семантическое версионирование** — формальное соглашение о назначении номеров версий в формате МАЖОРНАЯ.МИНОРНАЯ.ПАТЧ
+3. **Conventional Commits** — спецификация для написания стандартизированных сообщений коммитов
+4. **Инструменты автоматизации**:
+   - pnpm для управления пакетами Node.js
+   - commitizen для создания правильно отформатированных коммитов
+   - standard-changelog для автоматической генерации журнала изменений
 
-Получены практические навыки работы с современными инструментами разработки: pnpm для управления зависимостями, commitizen для стандартизированных коммитов и conventional commits для лучшей организации процесса разработки.
+Успешно выполнены следующие задачи:
+
+- Установлено и настроено необходимое программное обеспечение (git-flow, Node.js, pnpm, commitizen, standard-changelog)
+- Создан тестовый репозиторий git-extended с поддержкой git-flow
+- Настроена конфигурация для conventional commits
+- Созданы релизы с автоматической генерацией changelog
+- Отработаны практические сценарии работы с ветками feature и release
+
+Полученные навыки позволяют организовать профессиональный рабочий процесс разработки с четкой структурой ветвления, автоматическим версионированием и документированием изменений.
 
 # Список литературы{.unnumbered}
 
 ::: {#refs}
+- Gitflow Workflow: [https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+- Semantic Versioning: [https://semver.org/](https://semver.org/)
+- Conventional Commits: [https://www.conventionalcommits.org/](https://www.conventionalcommits.org/)
 - pnpm Documentation: [https://pnpm.io/](https://pnpm.io/)
-- Commitizen: [https://commitizen-tools.github.io/commitizen/](https://commitizen-tools.github.io/commitizen/)
-- Conventional Commits: [https://conventionalcommits.org/](https://conventionalcommits.org/)
-- Node.js Package Management: [https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-lifecycle](https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-lifecycle)
+- Commitizen: [https://github.com/commitizen/cz-cli](https://github.com/commitizen/cz-cli)
+- Standard Changelog: [https://github.com/conventional-changelog/conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)
+- Git-flow: [https://github.com/nvie/gitflow](https://github.com/nvie/gitflow)
 :::
