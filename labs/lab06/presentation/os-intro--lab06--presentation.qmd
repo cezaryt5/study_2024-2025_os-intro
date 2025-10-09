@@ -3,15 +3,15 @@
 author:
   name: Mohamed Musa
   student_number: "1032248286"
-  group: "Nkabd-05"
-  year: "2nd year"
-  email: "mohamed.musa@student.rudn.ru"
+  group: "НКАбд-05"
+  year: "2 год"
+  email: "1032248286@pfur.ru"
   affiliation:
     - name: Российский университет дружбы народов
       country: Российская Федерация
       postal-code: 117198
       city: Москва
-      address: ул. Миклухо-Маклая, д. 6
+      address: ул. Миклухо-Маклая, д. 19
 ## Title
 title: "Лабораторная работа №6"
 subtitle: "Основы работы с командной оболочкой Linux"

@@ -3,8 +3,8 @@
 author:
   name: Mohamed Musa
   student_number: "1032248286"
-  group: "Nkabd-05"
-  year: "2nd year"
+  group: "НКАбд-05"
+  year: "2 год"
   email: "1032248286@pfur.ru"
   affiliation:
     - name: Российский университет дружбы народов
