@@ -3,7 +3,7 @@
 author:
   name: Mohamed Musa
   student_number: "1032248286"
-  group: "Nkabd-05"
+  group: "НКАбд-05"
   year: "2nd year"
   email: "1032248286@pfur.ru"
   affiliation:
@@ -41,21 +41,11 @@ license: "CC BY"
 **GPG** (GNU Privacy Guard) - это инструмент для шифрования и цифровой подписи, совместимый с OpenPGP стандартом.
 
 # Выполнение лабораторной работы
+## Cкачал и убедился, что все необходимые инструменты установлены
 
-## Установка и настройка chezmoi
+Была выполнена загрузка dotfiles из удаленного репозитория. Процесс показан на рисунке @fig-download.
 
-В начале работы был установлен и настроен chezmoi для управления dotfiles. На рисунке @fig-chezmoi показан процесс инициализации и настройки chezmoi.
-
-![Настройка chezmoi для управления dotfiles](image/chezmoi.png){#fig-chezmoi width=80%}
-
-## Настройка GitHub репозитория для dotfiles
-
-Был создан и настроен git репозиторий для хранения dotfiles:
-
-```bash
-chezmoi init https://github.com/ceazyr5/dotfiles.git
-```
-
+![Загрузка dotfiles](image/download.png){#fig-download width=80%}
 ## Работа с pass для управления паролями
 
 Была выполнена установка и настройка pass для безопасного хранения паролей. Процесс настройки показан на рисунке @fig-pass.
@@ -84,12 +74,23 @@ pass git init
 Были выполнены операции синхронизации dotfiles между локальной системой и удаленным репозиторием. Процесс показан на рисунке @fig-push.
 
 ![Синхронизация dotfiles](image/push.png){#fig-push width=80%}
+## Установка и настройка chezmoi
 
-## Загрузка dotfiles из репозитория
+В начале работы был установлен и настроен chezmoi для управления dotfiles. На рисунке @fig-chezmoi показан процесс инициализации и настройки chezmoi.
 
-Была выполнена загрузка dotfiles из удаленного репозитория. Процесс показан на рисунке @fig-download.
+![Настройка chezmoi для управления dotfiles](image/chezmoi.png){#fig-chezmoi width=80%}
 
-![Загрузка dotfiles](image/download.png){#fig-download width=80%}
+## Настройка GitHub репозитория для dotfiles
+
+Был создан и настроен git репозиторий для хранения dotfiles:
+
+```bash
+chezmoi init https://github.com/ceazyr5/dotfiles.git
+```
+
+
+
+
 
 ## Настройка удаленного репозитория для паролей
 
