@@ -23,11 +23,6 @@ license: "CC BY"
 
 Получение навыков правильной работы с репозиториями git. Изучение работы с git-flow, семантическим версионированием и conventional commits.
 
-# Задание
-
-1. Выполнить работу для тестового репозитория
-2. Преобразовать рабочий репозиторий в репозиторий с git-flow и conventional commits
-
 # Теоретическое введение
 
 ## Рабочий процесс Gitflow
@@ -355,7 +350,6 @@ gh release create v1.2.3 -F CHANGELOG.md
 
 # Список литературы{.unnumbered}
 
-::: {#refs}
 - Gitflow Workflow: [https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 - Semantic Versioning: [https://semver.org/](https://semver.org/)
 - Conventional Commits: [https://www.conventionalcommits.org/](https://www.conventionalcommits.org/)
@@ -363,4 +357,3 @@ gh release create v1.2.3 -F CHANGELOG.md
 - Commitizen: [https://github.com/commitizen/cz-cli](https://github.com/commitizen/cz-cli)
 - Standard Changelog: [https://github.com/conventional-changelog/conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)
 - Git-flow: [https://github.com/nvie/gitflow](https://github.com/nvie/gitflow)
-:::
