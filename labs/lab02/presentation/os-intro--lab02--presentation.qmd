@@ -1,7 +1,7 @@
 ---
-## Author
+# Author
 author:
-  name: Мохамед Ахмед Муса
+  name: Мохамед Муса
   degrees: Студент
   student_number: "1032248286"
   group: "НКАбд-05-23"
@@ -13,7 +13,8 @@ author:
       postal-code: 117198
       city: Москва
       address: ул. Миклухо-Маклая, д. 19
-## Title
+
+# Title
 title: "Лабораторная работа №2"
 subtitle: "Система контроля версий Git"
 license: "CC BY"
@@ -24,15 +25,6 @@ date-format: "YYYY-MM-DD"
 # Цель работы
 
 Изучить основы работы с системой контроля версий Git и платформой GitHub, освоить настройку аутентификации, создание репозиториев и основные операции с кодом.
-
-# Задание
-
-1. Настроить Git и GitHub аккаунт
-2. Создать SSH ключи для безопасного подключения
-3. Настроить GPG ключи для подписывания коммитов
-4. Создать и настроить репозиторий
-5. Освоить основные команды Git
-6. Выполнить операции push и pull
 
 # Выполнение работы
 
@@ -52,7 +44,7 @@ date-format: "YYYY-MM-DD"
 :::
 ::: {.column width="40%"}
 
-![](./image/gh.png){width=90%}
+![Настройка GitHub аккаунта](./image/gh.png){#fig-gh width=90%}
 
 :::
 ::::::::::::::
@@ -69,7 +61,7 @@ date-format: "YYYY-MM-DD"
 :::
 ::: {.column width="40%"}
 
-![](./image/repo.png){width=90%}
+![Создание репозитория](./image/repo.png){#fig-repo width=90%}
 
 :::
 ::::::::::::::
@@ -79,19 +71,14 @@ date-format: "YYYY-MM-DD"
 :::::::::::::: {.columns align=center}
 ::: {.column width="60%"}
 
-**Команды для генерации SSH ключей:**
-
-```bash
-ssh-keygen -t ed25519 -C "mohamed.musa@student.rudn.ru"
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-cat ~/.ssh/id_ed25519.pub
-```
+- Сгенерированы SSH ключи для безопасного подключения
+- Добавлены в аккаунт GitHub
+- Настроена аутентификация без пароля
 
 :::
 ::: {.column width="40%"}
 
-![](./image/ssh.png){width=90%}
+![Настройка SSH ключей](./image/ssh.png){#fig-ssh width=90%}
 
 :::
 ::::::::::::::
@@ -101,19 +88,14 @@ cat ~/.ssh/id_ed25519.pub
 :::::::::::::: {.columns align=center}
 ::: {.column width="60%"}
 
-**Команды для генерации GPG ключей:**
-
-```bash
-gpg --full-generate-key
-gpg --list-secret-keys --keyid-format LONG
-git config --global user.signingkey <KEY_ID>
-git config --global commit.gpgsign true
-```
+- Созданы GPG ключи для подписи коммитов
+- Настроена верификация подписей
+- Обеспечена дополнительная безопасность
 
 :::
 ::: {.column width="40%"}
 
-![](./image/gpg.png){width=90%}
+![Настройка GPG ключей](./image/gpg.png){#fig-gpg width=90%}
 
 :::
 ::::::::::::::
@@ -129,7 +111,7 @@ git config --global commit.gpgsign true
 make
 ```
 
-Подготовка рабочей структуры согласно шаблону.
+## Подготовка рабочей структуры согласно шаблону.
 
 :::
 ::: {.column width="40%"}
@@ -146,9 +128,8 @@ make
 **Настройка глобальных параметров:**
 
 ```bash
-git config --global user.name "Mohamed Musa"
-git config --global user.email "mohamed.musa@student.rudn.ru"
-ssh -T git@github.com
+git config --global user.name "cezaryt5"
+git config --global user.email "ww.mohammed.mn@gmail.com"
 ```
 
 :::
@@ -181,18 +162,6 @@ git push -u origin main
 
 :::
 ::::::::::::::
-
-# Выводы
-
-## Достигнутые результаты
-
-✅ Настроен Git и создан GitHub аккаунт
-✅ Созданы SSH ключи для безопасного подключения
-✅ Настроены GPG ключи для подписывания коммитов
-✅ Создан и настроен репозиторий для лабораторных работ
-✅ Освоены основные команды Git (add, commit, push, pull)
-✅ Выполнены операции с ветками и слияние
-
 ## Полученные навыки
 
 - Работа с современными инструментами разработки
@@ -202,10 +171,8 @@ git push -u origin main
 
 # Список литературы
 
-::: {#refs}
 - Git Documentation: <https://git-scm.com/doc>
 - GitHub Guides: <https://guides.github.com/>
 - SSH Keys Setup: <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>
 - GPG Keys Setup: <https://docs.github.com/en/authentication/managing-commit-signature-verification>
 - Pro Git Book: <https://git-scm.com/book/ru/v2>
-:::
