@@ -1017,6 +1017,184 @@ pkill test_
 
 Эти навыки являются фундаментальными для эффективной работы в Linux и необходимы любому системному администратору, разработчику или DevOps инженеру.
 
+## Lab 12 Additional Tasks
+
+### Task 1: Self-backup script
+
+Created a script that backs itself up to a backup directory in the home folder. The script creates a zip archive with a timestamp in the filename.
+
+**Script content:**
+```bash
+#!/bin/bash
+# Script to backup itself to a backup directory in home folder
+
+# Create backup directory in home if it doesn't exist
+BACKUP_DIR="$HOME/backup"
+mkdir -p "$BACKUP_DIR"
+
+# Get the script's filename
+SCRIPT_NAME=$(basename "$0")
+
+# Create a timestamp for the backup
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+# Create backup filename with timestamp
+BACKUP_FILE="$BACKUP_DIR/${SCRIPT_NAME}_${TIMESTAMP}.zip"
+
+# Use zip to archive the script
+zip -j "$BACKUP_FILE" "$0"
+
+echo "Backup created: $BACKUP_FILE"
+```
+
+### Task 2: Script to handle arbitrary number of arguments
+
+Created a script that can handle any number of arguments, including more than ten. It demonstrates two methods of argument processing.
+
+**Script content:**
+```bash
+#!/bin/bash
+# Script to handle arbitrary number of arguments
+
+echo "Number of arguments: $#"
+
+# Using a for loop to iterate through all arguments
+counter=1
+for arg in "$@"; do
+    echo "Argument $counter: $arg"
+    ((counter++))
+done
+
+# Alternative method using while loop
+echo ""
+echo "Using while loop method:"
+index=1
+while [ $index -le $# ]; do
+    eval "current_arg=\${$index}"
+    echo "Argument $index: $current_arg"
+    ((index++))
+done
+```
+
+### Task 3: ls-like script without using ls or dir
+
+Created a script that mimics the functionality of the `ls` command without using `ls` or `dir`. It displays file information including permissions, owner, size, and modification time.
+
+**Script content:**
+```bash
+#!/bin/bash
+# Script to mimic ls command without using ls or dir
+
+# Default to current directory if no argument provided
+DIRECTORY="${1:-.}"
+
+# Check if directory exists
+if [ ! -d "$DIRECTORY" ]; then
+    echo "Error: $DIRECTORY is not a directory" >&2
+    exit 1
+fi
+
+# Print directory contents with permissions
+for item in "$DIRECTORY"/*; do
+    # Remove directory path from item name for display
+    basename_item=$(basename "$item")
+    
+    # Get file permissions, owner, size, and modification time
+    if [ -e "$item" ]; then  # Check if the item actually exists (in case of glob with no matches)
+        permissions=$(stat -c "%A" "$item" 2>/dev/null || stat -f "%Sp" "$item" 2>/dev/null)
+        owner=$(stat -c "%U" "$item" 2>/dev/null || stat -f "%Su" "$item" 2>/dev/null)
+        size=$(stat -c "%s" "$item" 2>/dev/null || stat -f "%z" "$item" 2>/dev/null)
+        mod_time=$(stat -c "%y" "$item" 2>/dev/null || stat -f "%Sm" "$item" 2>/dev/null)
+        
+        # Show different indicators for different file types
+        if [ -d "$item" ]; then
+            type_indicator="d"
+            name_with_indicator="$basename_item/"
+        elif [ -L "$item" ]; then
+            type_indicator="l"
+            name_with_indicator="$basename_item@ -> $(readlink "$item")"
+        elif [ -x "$item" ]; then
+            type_indicator="-"
+            name_with_indicator="$basename_item*"
+        else
+            type_indicator="-"
+            name_with_indicator="$basename_item"
+        fi
+        
+        printf "%-10s %-10s %8s %s %s\n" "$permissions" "$owner" "$size" "$mod_time" "$name_with_indicator"
+    fi
+done
+
+# Also show hidden files (those starting with .)
+for item in "$DIRECTORY"/.*; do
+    basename_item=$(basename "$item")
+    
+    # Skip current directory (.) and parent directory (..)
+    if [ "$basename_item" != "." ] && [ "$basename_item" != ".." ]; then
+        if [ -e "$item" ]; then
+            permissions=$(stat -c "%A" "$item" 2>/dev/null || stat -f "%Sp" "$item" 2>/dev/null)
+            owner=$(stat -c "%U" "$item" 2>/dev/null || stat -f "%Su" "$item" 2>/dev/null)
+            size=$(stat -c "%s" "$item" 2>/dev/null || stat -f "%z" "$item" 2>/dev/null)
+            mod_time=$(stat -c "%y" "$item" 2>/dev/null || stat -f "%Sm" "$item" 2>/dev/null)
+            
+            if [ -d "$item" ]; then
+                type_indicator="d"
+                name_with_indicator="$basename_item/"
+            elif [ -L "$item" ]; then
+                type_indicator="l"
+                name_with_indicator="$basename_item@ -> $(readlink "$item")"
+            elif [ -x "$item" ]; then
+                type_indicator="-"
+                name_with_indicator="$basename_item*"
+            else
+                type_indicator="-"
+                name_with_indicator="$basename_item"
+            fi
+            
+            printf "%-10s %-10s %8s %s %s\n" "$permissions" "$owner" "$size" "$mod_time" "$name_with_indicator"
+        fi
+    fi
+done
+```
+
+### Task 4: Count files by extension in directory
+
+Created a script that counts files with a specific extension in a specified directory.
+
+**Script content:**
+```bash
+#!/bin/bash
+# Script to count files by extension in a specified directory
+
+# Check if correct number of arguments provided
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <file_extension> <directory_path>"
+    echo "Example: $0 .txt /home/user/documents"
+    exit 1
+fi
+
+# Get arguments
+EXTENSION=$1
+DIRECTORY=$2
+
+# Check if directory exists
+if [ ! -d "$DIRECTORY" ]; then
+    echo "Error: Directory $DIRECTORY does not exist"
+    exit 1
+fi
+
+# Count files with the specified extension
+# Using find to locate files, then counting them
+COUNT=$(find "$DIRECTORY" -type f -name "*$EXTENSION" | wc -l)
+
+echo "Number of files with extension $EXTENSION in $DIRECTORY: $COUNT"
+
+# Optionally, list the files found
+echo ""
+echo "Files found:"
+find "$DIRECTORY" -type f -name "*$EXTENSION"
+```
+
 # Список литературы{.unnumbered}
 
 ::: {#refs}
