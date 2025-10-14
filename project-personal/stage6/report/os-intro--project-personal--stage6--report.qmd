@@ -1,67 +1,597 @@
 ---
 ## Author
 author:
-  name: Дмитрий Сергеевич Кулябов
-  degrees: DSc
-  orcid: 0000-0002-0877-7063
-  email: kulyabov-ds@rudn.ru
+  name: Mohamed Musa
+  student_number: "1032248286"
+  group: "НКАбд-05-24"
+  year: "2 год"
+  email: "1032248286@pfur.ru"
   affiliation:
     - name: Российский университет дружбы народов
       country: Российская Федерация
       postal-code: 117198
       city: Москва
-      address: ул. Миклухо-Маклая, д. 6
+      address: ул. Миклухо-Маклая, д. 19
 
 ## Title
-title: "Шаблон отчёта по лабораторной работе"
-subtitle: "Простейший вариант"
+title: "Индивидуальный проект. Этап 6"
+subtitle: "Размещение двуязычного сайта"
 license: "CC BY"
 ---
 
 # Цель работы
 
-Здесь приводится формулировка цели лабораторной работы.
-Формулировки цели для каждой лабораторной работы приведены в методических указаниях.
-
-Цель данного шаблона --- максимально упростить подготовку отчётов по лабораторным работам.
-Модифицируя данный шаблон, студенты смогут без труда подготовить отчёт по лабораторным работам, а также познакомиться с основными возможностями разметки Markdown.
+Настроить поддержку двух языков (русского и английского) на персональном сайте. Разместить контент на обоих языках и создать двуязычные посты.
 
 # Задание
 
-Здесь приводится описание задания в соответствии с рекомендациями методического пособия и выданным вариантом.
+1. Сделать поддержку английского и русского языков
+2. Разместить элементы сайта на обоих языках
+3. Разместить контент на обоих языках
+4. Сделать пост по прошедшей неделе
+5. Добавить пост на тему по выбору (на двух языках)
 
 # Теоретическое введение
 
-Здесь описываются теоретические аспекты, связанные с выполнением работы.
+## Многоязычность в Hugo
 
-Например, в [табл. @tbl-std-dir] приведено краткое описание стандартных каталогов Unix.
+Hugo поддерживает создание многоязычных сайтов через встроенную систему i18n (internationalization).
 
-| Имя каталога | Описание каталога                                                                                                          |
-|--------------|----------------------------------------------------------------------------------------------------------------------------|
-| `/`          | Корневая директория, содержащая всю файловую                                                                               |
-| `/bin `      | Основные системные утилиты, необходимые как в однопользовательском режиме, так и при обычной работе всем пользователям     |
-| `/etc`       | Общесистемные конфигурационные файлы и файлы конфигурации установленных программ                                           |
-| `/home`      | Содержит домашние директории пользователей, которые, в свою очередь, содержат персональные настройки и данные пользователя |
-| `/media`     | Точки монтирования для сменных носителей                                                                                   |
-| `/root`      | Домашняя директория пользователя  `root`                                                                                   |
-| `/tmp`       | Временные файлы                                                                                                            |
-| `/usr`       | Вторичная иерархия для данных пользователя                                                                                 |
+### Основные концепции
 
-: Описание некоторых каталогов файловой системы GNU Linux {#tbl-std-dir}
+**Языковые коды:**
+- `en` — английский
+- `ru` — русский
+- `de` — немецкий
+- `fr` — французский
 
-Более подробно про Unix см. в [@tanenbaum_book_modern-os_ru; @robbins_book_bash_en; @zarrelli_book_mastering-bash_en; @newham_book_learning-bash_en].
+**Структура контента:**
+```
+content/
+├── en/
+│   ├── authors/
+│   ├── post/
+│   └── project/
+└── ru/
+    ├── authors/
+    ├── post/
+    └── project/
+```
 
-# Выполнение лабораторной работы
+### Конфигурация языков
 
-Описываются проведённые действия, в качестве иллюстрации даётся ссылка на иллюстрацию ([рис. @fig-001]).
+В `config.yaml` или `config/_default/languages.yaml`:
 
-![V Сольвеевский конгресс (1927) «Электроны и фотоны»](image/solvay.jpg){#fig-001 width=70%}
+```yaml
+languages:
+  en:
+    languageName: English
+    weight: 1
+    title: My Site
+    params:
+      description: My personal website
+  ru:
+    languageName: Русский
+    weight: 2
+    title: Мой сайт
+    params:
+      description: Мой персональный сайт
+```
+
+### Параметры языка
+
+| Параметр | Описание |
+|----------|----------|
+| `languageName` | Название языка для отображения |
+| `weight` | Порядок языков (меньше = выше) |
+| `title` | Заголовок сайта на языке |
+| `contentDir` | Директория контента (по умолчанию `content/{lang}`) |
+
+: Параметры конфигурации языка {#tbl-lang-params}
+
+### Переключатель языков
+
+Hugo Academic автоматически добавляет переключатель языков в навигацию.
+
+Настройка в `config/_default/params.yaml`:
+```yaml
+show_language_switcher: true
+```
+
+### Переводы строк интерфейса
+
+Файлы переводов в `i18n/`:
+- `en.yaml` — английские строки
+- `ru.yaml` — русские строки
+
+Пример `i18n/ru.yaml`:
+```yaml
+- id: toggle_navigation
+  translation: Переключить навигацию
+- id: table_of_contents
+  translation: Содержание
+- id: on_this_page
+  translation: На этой странице
+```
+
+### Ссылки между языками
+
+Hugo автоматически связывает страницы на разных языках, если они имеют одинаковый путь:
+- `content/en/post/my-post/index.md`
+- `content/ru/post/my-post/index.md`
+
+### Меню на разных языках
+
+В `config/_default/menus.yaml`:
+```yaml
+en:
+  main:
+    - name: Home
+      url: '#about'
+      weight: 10
+    - name: Posts
+      url: '#posts'
+      weight: 20
+
+ru:
+  main:
+    - name: Главная
+      url: '#about'
+      weight: 10
+    - name: Посты
+      url: '#posts'
+      weight: 20
+```
+
+## Стратегии перевода контента
+
+### 1. Полный перевод
+Все страницы переведены на оба языка.
+
+**Преимущества:**
+- Лучший пользовательский опыт
+- SEO для обоих языков
+
+**Недостатки:**
+- Больше работы
+- Необходимость поддерживать синхронизацию
+
+### 2. Частичный перевод
+Основные страницы переведены, посты — на одном языке.
+
+**Преимущества:**
+- Меньше работы
+- Гибкость
+
+**Недостатки:**
+- Неполный опыт для пользователей
+
+### 3. Автоматический перевод
+Использование API переводов (Google Translate, DeepL).
+
+**Преимущества:**
+- Быстро
+- Автоматизация
+
+**Недостатки:**
+- Качество перевода
+- Стоимость API
+
+## Лучшие практики
+
+1. **Используйте языковые коды ISO 639-1** (`en`, `ru`, не `eng`, `rus`)
+2. **Переводите метаданные** (title, description, keywords)
+3. **Локализуйте даты и числа** (формат даты, разделители)
+4. **Адаптируйте контент** (не просто переводите, учитывайте культурные особенности)
+5. **Тестируйте оба языка** (проверяйте ссылки, форматирование)
+6. **Используйте hreflang** для SEO (Hugo делает это автоматически)
+
+# Выполнение работы
+
+## Шаг 1: Настройка конфигурации языков
+
+Создал файл `config/_default/languages.yaml`:
+
+```yaml
+en:
+  languageName: English
+  weight: 1
+  title: Mohamed Musa
+  params:
+    description: Personal website of Mohamed Musa, RUDN student
+
+ru:
+  languageName: Русский
+  weight: 2
+  title: Мохамед Муса
+  params:
+    description: Персональный сайт Мохамеда Мусы, студента РУДН
+```
+
+Обновил `config/_default/params.yaml`:
+```yaml
+show_language_switcher: true
+```
+
+## Шаг 2: Реорганизация структуры контента
+
+Переместил существующий контент в языковые директории:
+
+```bash
+# Создание структуры
+mkdir -p content/en content/ru
+
+# Перемещение русского контента
+mv content/authors content/ru/
+mv content/post content/ru/
+mv content/project content/ru/
+
+# Копирование для английской версии
+cp -r content/ru/authors content/en/
+cp -r content/ru/post content/en/
+cp -r content/ru/project content/en/
+```
+
+## Шаг 3: Перевод профиля автора
+
+### Русская версия (`content/ru/authors/admin/_index.md`):
+
+```markdown
+---
+title: Мохамед Муса
+role: Студент
+organizations:
+  - name: Российский университет дружбы народов
+    url: https://www.rudn.ru/
+
+bio: Студент РУДН, изучаю операционные системы и программирование.
+
+interests:
+  - Операционные системы
+  - Программирование на Python
+  - Linux
+  - Анализ данных
+  - Машинное обучение
+
+education:
+  courses:
+    - course: Бакалавриат по компьютерным наукам
+      institution: РУДН
+      year: 2024-настоящее время
+
+social:
+  - icon: envelope
+    icon_pack: fas
+    link: 'mailto:1032248286@pfur.ru'
+  - icon: github
+    icon_pack: fab
+    link: https://github.com/cezaryt5
+  - icon: orcid
+    icon_pack: ai
+    link: https://orcid.org/
+
+email: "1032248286@pfur.ru"
+---
+
+Мохамед Муса — студент Российского университета дружбы народов,
+группа НКАбд-05-24. Изучаю операционные системы, программирование
+и анализ данных.
+```
+
+### Английская версия (`content/en/authors/admin/_index.md`):
+
+```markdown
+---
+title: Mohamed Musa
+role: Student
+organizations:
+  - name: RUDN University
+    url: https://www.rudn.ru/
+
+bio: RUDN student studying operating systems and programming.
+
+interests:
+  - Operating Systems
+  - Python Programming
+  - Linux
+  - Data Analysis
+  - Machine Learning
+
+education:
+  courses:
+    - course: Bachelor's in Computer Science
+      institution: RUDN University
+      year: 2024-present
+
+social:
+  - icon: envelope
+    icon_pack: fas
+    link: 'mailto:1032248286@pfur.ru'
+  - icon: github
+    icon_pack: fab
+    link: https://github.com/cezaryt5
+  - icon: orcid
+    icon_pack: ai
+    link: https://orcid.org/
+
+email: "1032248286@pfur.ru"
+---
+
+Mohamed Musa is a student at RUDN University, group НКАбд-05-24.
+Studying operating systems, programming, and data analysis.
+```
+
+## Шаг 4: Перевод проектов
+
+### Проект "Персональный сайт"
+
+**Русская версия** (`content/ru/project/personal-website/index.md`):
+```markdown
+---
+title: "Персональный сайт на Hugo"
+summary: "Создание персонального сайта с Hugo Academic"
+tags: ["Hugo", "Web", "GitHub Pages"]
+date: 2024-10-01
+---
+
+Персональный академический сайт на Hugo с темой Academic.
+```
+
+**Английская версия** (`content/en/project/personal-website/index.md`):
+```markdown
+---
+title: "Personal Website with Hugo"
+summary: "Creating a personal website with Hugo Academic"
+tags: ["Hugo", "Web", "GitHub Pages"]
+date: 2024-10-01
+---
+
+Personal academic website built with Hugo and Academic theme.
+```
+
+## Шаг 5: Создание двуязычных постов
+
+### Пост по прошедшей неделе
+
+**Русская версия** (`content/ru/post/week-post-5/index.md`):
+```markdown
+---
+title: "Пост по прошедшей неделе (неделя 5)"
+date: 2024-11-11
+---
+
+На этой неделе я настроил двуязычную поддержку сайта. Добавил
+английскую версию всех страниц и постов. Настроил переключатель
+языков в навигации.
+
+Перевел профиль, проекты и основные посты. Теперь сайт доступен
+на русском и английском языках.
+
+Также изучил возможности Hugo для многоязычных сайтов и лучшие
+практики локализации контента.
+```
+
+**Английская версия** (`content/en/post/week-post-5/index.md`):
+```markdown
+---
+title: "Weekly Post (Week 5)"
+date: 2024-11-11
+---
+
+This week I configured bilingual support for the site. Added
+English version of all pages and posts. Set up language switcher
+in navigation.
+
+Translated profile, projects, and main posts. Now the site is
+available in Russian and English.
+
+Also studied Hugo's capabilities for multilingual sites and best
+practices for content localization.
+```
+
+### Тематический пост: Системы контроля версий
+
+**Русская версия** (`content/ru/post/version-control/index.md`):
+```markdown
+---
+title: "Системы контроля версий"
+date: 2024-11-11
+---
+
+## Введение
+
+Системы контроля версий (VCS) — инструменты для отслеживания
+изменений в коде и совместной работы.
+
+## Git
+
+### Основные команды
+
+```bash
+# Инициализация репозитория
+git init
+
+# Добавление файлов
+git add .
+
+# Коммит изменений
+git commit -m "Описание изменений"
+
+# Отправка на сервер
+git push origin main
+```
+
+### Ветвление
+
+```bash
+# Создание ветки
+git branch feature-name
+
+# Переключение на ветку
+git checkout feature-name
+
+# Создание и переключение
+git checkout -b feature-name
+
+# Слияние веток
+git merge feature-name
+```
+
+## GitHub
+
+Платформа для хостинга Git-репозиториев с дополнительными
+возможностями:
+- Pull requests
+- Issues
+- Actions (CI/CD)
+- GitHub Pages
+
+## Заключение
+
+Git и GitHub — стандарт индустрии для контроля версий и
+совместной разработки.
+```
+
+**Английская версия** (`content/en/post/version-control/index.md`):
+```markdown
+---
+title: "Version Control Systems"
+date: 2024-11-11
+---
+
+## Introduction
+
+Version Control Systems (VCS) are tools for tracking code changes
+and collaborative work.
+
+## Git
+
+### Basic Commands
+
+```bash
+# Initialize repository
+git init
+
+# Add files
+git add .
+
+# Commit changes
+git commit -m "Change description"
+
+# Push to server
+git push origin main
+```
+
+### Branching
+
+```bash
+# Create branch
+git branch feature-name
+
+# Switch to branch
+git checkout feature-name
+
+# Create and switch
+git checkout -b feature-name
+
+# Merge branches
+git merge feature-name
+```
+
+## GitHub
+
+Platform for hosting Git repositories with additional features:
+- Pull requests
+- Issues
+- Actions (CI/CD)
+- GitHub Pages
+
+## Conclusion
+
+Git and GitHub are industry standards for version control and
+collaborative development.
+```
+
+## Шаг 6: Настройка меню
+
+Создал `config/_default/menus.yaml`:
+
+```yaml
+en:
+  main:
+    - name: Home
+      url: '#about'
+      weight: 10
+    - name: Posts
+      url: '#posts'
+      weight: 20
+    - name: Projects
+      url: '#projects'
+      weight: 30
+    - name: Contact
+      url: '#contact'
+      weight: 40
+
+ru:
+  main:
+    - name: Главная
+      url: '#about'
+      weight: 10
+    - name: Посты
+      url: '#posts'
+      weight: 20
+    - name: Проекты
+      url: '#projects'
+      weight: 30
+    - name: Контакты
+      url: '#contact'
+      weight: 40
+```
+
+## Шаг 7: Тестирование и развертывание
+
+Протестировал сайт локально:
+```bash
+hugo server
+```
+
+Проверил:
+- ✅ Переключатель языков работает
+- ✅ Контент отображается на обоих языках
+- ✅ Ссылки корректны
+- ✅ Меню переведено
+
+Развернул на GitHub Pages:
+```bash
+hugo
+cd public
+git add .
+git commit -m "Add bilingual support"
+git push
+```
 
 # Выводы
 
-Здесь кратко описываются итоги проделанной работы.
+В ходе выполнения шестого этапа индивидуального проекта были успешно выполнены следующие задачи:
+
+1. ✅ Настроена поддержка двух языков (русский и английский)
+2. ✅ Переведены все элементы сайта
+3. ✅ Создан двуязычный контент (профиль, проекты, посты)
+4. ✅ Настроен переключатель языков
+5. ✅ Созданы двуязычные посты
+
+Персональный сайт теперь полностью двуязычный, что расширяет аудиторию и улучшает доступность.
+
+Получены практические навыки:
+- Настройки многоязычности в Hugo
+- Организации контента по языкам
+- Локализации интерфейса
+- Перевода технического контента
 
 # Список литературы{.unnumbered}
 
 ::: {#refs}
+- Hugo Multilingual Mode: https://gohugo.io/content-management/multilingual/
+- Hugo Academic Documentation: https://wowchemy.com/docs/
+- i18n Best Practices: https://www.w3.org/International/
 :::
