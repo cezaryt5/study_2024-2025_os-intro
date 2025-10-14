@@ -3,20 +3,21 @@
 author:
   name: Mohamed Musa
   student_number: "1032248286"
-  group: "Nkabd-05"
-  year: "2nd year"
-  email: "mohamed.musa@student.rudn.ru"
+  group: "НКАбд-05"
+  year: "2 год"
+  email: "1032248286@pfur.ru"
   affiliation:
     - name: Российский университет дружбы народов
       country: Российская Федерация
       postal-code: 117198
       city: Москва
       address: ул. Миклухо-Маклая, д. 19
-
 ## Title
 title: "Лабораторная работа №8"
 subtitle: "Работа с процессами и текстовыми редакторами"
-license: "CC BY"
+license: CC BY
+date: today
+date-format: "YYYY-MM-DD"
 ---
 
 # Цель работы
@@ -206,14 +207,6 @@ man [секция] команда
 
 ## Изучение справочной системы
 
-Были изучены справочные страницы для различных команд:
-
-```bash
-man ps
-man kill
-man pstree
-```
-
 Справочная информация показана на рисунке @fig-man.
 
 ![Справочная страница команд](image/man.png){#fig-man width=80%}
@@ -229,27 +222,6 @@ man pstree
 Финальные результаты выполнения различных команд показаны на рисунке @fig-result.
 
 ![Результаты выполнения команд](image/result.png){#fig-result width=80%}
-
-## Практическая работа
-
-В ходе работы были выполнены следующие команды:
-
-```bash
-# Поиск файлов
-find /home -name "*.txt" -type f
-
-# Запуск редактора
-gedit example.txt
-
-# Просмотр процессов
-ps aux | head -10
-
-# Завершение процесса
-kill -9 <PID>
-
-# Дерево процессов
-pstree -p
-```
 
 # Выводы
 

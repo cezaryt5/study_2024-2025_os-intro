@@ -80,7 +80,7 @@ date-format: "YYYY-MM-DD" # Example: 2025-09-06
 
 - В Bash переменная $RANDOM генерирует числа от 0 до 32767
 - Используется для получения псевдослучайных значений
-- Для получения букв используем: $(printf '\\$(printf '%03o' $((97 + RANDOM % 26)))')
+- Для получения букв используем преобразование кода: `97 + (RANDOM % 26)` и `printf` для получения символа.
 
 # Практическая реализация
 
@@ -107,6 +107,13 @@ rm -f "$RESOURCE_LOCK"
 echo "$PROCESS_NAME: Ресурс освобождён"
 ```
 
+### Демонстрация (семафор)
+
+![semaphore.sh (код)](image/content1.png){width=70%}
+
+![Множественный запуск, ожидание/использование](image/content3.png){width=70%}
+
+
 ## Задание 2: Команда man
 
 ```bash
@@ -126,6 +133,13 @@ else
     exit 1
 fi
 ```
+
+### Демонстрация (man)
+
+![myman.sh (код)](image/run1.png){width=70%}
+
+![Результат myman.sh](image/contnet2.png){width=70%}
+
 
 ## Задание 3: Генерация случайных последовательностей
 
@@ -152,6 +166,11 @@ generate_random_sequence() {
 result=$(generate_random_sequence $LENGTH)
 echo "Случайная последовательность: $result"
 ```
+
+### Демонстрация (RANDOM)
+
+![Результат random_seq.sh](image/run3.png){width=60%}
+
 
 # Результаты
 

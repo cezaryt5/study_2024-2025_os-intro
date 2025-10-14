@@ -31,12 +31,7 @@ date-format: "YYYY-MM-DD"
   * Студент группы НКАбд-05-24
   * Студенческий билет: 1032248286
   * Российский университет дружбы народов
-  * [mohamed.musa@student.rudn.ru](mailto:mohamed.musa@student.rudn.ru)
-
-:::
-::: {.column width="30%"}
-
-![](./image/kulyabov.jpg)
+  * [1032248286@pfur.ru](mailto:1032248286@pfur.ru)
 
 :::
 ::::::::::::::
